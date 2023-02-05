@@ -1,30 +1,24 @@
 <script lang="ts">
-	import {page} from "$app/stores";
-	const hrefs = ["Home", "Ingredients", "About"];
+	import { page } from '$app/stores';
+	const hrefs = ['Home', 'Ingredients', 'About'];
 
 	function isActive(href: string) {
 		console.log($page.url.pathname, href);
-		return $page.url.pathname === "/" && href === "Home" || $page.url.pathname.slice(1) === href;
+		return ($page.url.pathname === '/' && href === 'Home') || $page.url.pathname.slice(1) === href;
 	}
 </script>
 
 <body>
 	<div class="topnav">
 		{#each hrefs as href}
-			<a class={isActive(href) ? 'active' : ''} href={href === "Home" ? "/" : href}>{href}</a>
+			<a class={isActive(href) ? 'active' : ''} href={href === 'Home' ? '/' : href}>{href}</a>
 		{/each}
-
 	</div>
 </body>
 
 <style>
-	body {
-		background-color: #FFE5B7;
-		font-family: Verdana, Geneva, Tahoma, sans-serif;
-	}
-
 	.topnav {
-		background-color: rgba(254,136,75,1);
+		background-color: rgba(254, 136, 75, 1);
 		overflow: hidden;
 		border-radius: 20px;
 	}
