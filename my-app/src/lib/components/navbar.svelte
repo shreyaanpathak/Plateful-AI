@@ -9,7 +9,6 @@
 </script>
 
 <body>
-
 	<div class="topnav">
 		{#each hrefs as href}
 			<a class={isActive(href) ? 'active' : ''} href={href === "Home" ? "/" : href}>{href}</a>
@@ -20,12 +19,12 @@
 
 <style>
 	body {
-		background-color: black;
+		background-color: #FFE5B7;
 		font-family: Verdana, Geneva, Tahoma, sans-serif;
 	}
 
 	.topnav {
-		background-color: #333;
+		background-color: rgba(254,136,75,1);
 		overflow: hidden;
 		border-radius: 20px;
 	}
