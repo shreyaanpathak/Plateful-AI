@@ -44,7 +44,7 @@
 			<div class="{rowClasses} {headerClasses} flex flex-col items-center">
 				<h1 class="text-6xl font-extrabold tracking-tight">What is Plateful?</h1>
 				<p
-					class="text-xl font-normal mt-14 p-6 w-8/12 rounded-xl text-left leading-relaxed paragraph"
+					class="text-xl font-normal mt-14 mb-6 p-6 w-8/12 rounded-xl text-left leading-relaxed paragraph"
 				>
 					Plateful makes meal planning and recipe creation effortless. Simply select the food items
 					you have in your kitchen and the website will search through a database of thousands of
