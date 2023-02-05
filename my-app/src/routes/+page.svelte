@@ -20,7 +20,7 @@
 		<div class="topnav font-bold text-4xl pt-2 pl-2 pb-2 basis-full">Plateful</div>
 		<div class="flex flex-row h-screen justify-center items-center">
 			<div class={rowClasses}>
-				<img in:fly={{ duration: 1200 }} alt="Food" class="my-6 m-auto h-full" src={Img1} />
+				<img alt="Food" class="my-6 m-auto h-full" src={Img1} />
 			</div>
 			<div class="{rowClasses} {headerClasses} mb-48 flex flex-col items-center justify-center">
 				<Typewriter interval={40}>
@@ -30,7 +30,7 @@
 				</Typewriter>
 				<p
 					in:slide={{ delay: 300 }}
-					class="text-xl font-normal mt-14 p-6 rounded-xl w-9/12 leading-relaxed paragraph"
+					class="text-2xl font-normal mt-14 p-14 rounded-xl w-9/12 leading-10 paragraph"
 				>
 					Plateful is the ultimate kitchen assistant that helps you make the most out of the food
 					you
@@ -84,6 +84,11 @@
 
 	.accent {
 		background-color: #fed384;
+	}
+
+	:root {
+		--cursor-color: #cc5519;
+		--cursor-width: 2px;
 	}
 
 	.pagecontainer {
