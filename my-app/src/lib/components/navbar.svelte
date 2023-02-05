@@ -9,18 +9,18 @@
 </script>
 
 <body>
-	<div class="topnav">
-		{#each hrefs as href}
-			<a class={isActive(href) ? 'active' : ''} href={href === 'Home' ? '/' : href}>{href}</a>
-		{/each}
-	</div>
+	<div class="topnav font-bold text-4xl pt-2 pl-2 pb-2 text-[#FFE5B7]">Plateful</div>
 </body>
 
 <style>
+	body {
+		background-color: #ffe5b7;
+		font-family: Verdana, Geneva, Tahoma, sans-serif;
+	}
+
 	.topnav {
 		background-color: rgba(254, 136, 75, 1);
 		overflow: hidden;
-		border-radius: 20px;
 	}
 
 	/* Style the links inside the navigation bar */

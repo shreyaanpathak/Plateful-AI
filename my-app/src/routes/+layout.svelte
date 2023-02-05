@@ -6,10 +6,3 @@
 
 <Nav />
 <slot />
-
-<style>
-	body {
-		background-color: #ffe5b7;
-		font-family: Verdana, Geneva, Tahoma, sans-serif;
-	}
-</style>
