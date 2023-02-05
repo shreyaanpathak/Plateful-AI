@@ -3,11 +3,11 @@
 	import Rightpantry from './rightpantry.svelte';
 </script>
 
-<div class="pantrycontainer flex h-screen w-screen">
-	<div class="leftcontainer h-screen w-1/3">
+<div class="pantrycontainer flex h-full w-screen overflow-hidden">
+	<div class="leftcontainer h-screen w-1/3 overflow-scroll">
 		<Leftpantry />
 	</div>
-	<div class="rightcontainer h-screen w-2/3">
+	<div class="rightcontainer h-screen w-2/3 overflow-scroll">
 		<Rightpantry />
 	</div>
 </div>

@@ -1,29 +1,76 @@
 <script lang="ts">
-	import { pantry_items } from '$lib/stores/pantrystore.js';
+	import { pantry_items, selected_items } from '$lib/stores/pantrystore.js';
 	import { onDestroy } from 'svelte';
 	import Category from '$lib/components/category.svelte';
-	let items: Array<string> = [];
+	import { Essentials, Fruits, Meats, Vegetables } from '$lib/util/categories';
+	let allItems: Array<string> = [];
 	let unsub = pantry_items.subscribe((value) => {
-		items = value;
+		allItems = value;
 	});
 
+	let items: string[] = [];
+	selected_items.subscribe((value) => (items = value));
 	onDestroy(unsub);
-	let allItems = ['you', 'are', 'stupid'];
+	let inputValue: string = '';
+	let ulValue;
+	function update(food: string) {
+		let elems = document.getElementsByClassName(food);
+		for (let elem of elems) {
+			elem.classList.toggle('active');
+		}
+		if (!items.includes(food.trim())) {
+			selected_items.set([...items, food.trim()]);
+		} else selected_items.set(items.filter((item) => item.trim() !== food.trim()));
+	}
+	function myFunction() {
+		var input, filter, ul, li, button, i, txtValue;
+		input = document.getElementById('myInput');
+		filter = inputValue.toUpperCase();
+		ul = document.getElementById('ULLL');
+		li = ul?.getElementsByTagName('li')!;
+		for (i = 0; i < li?.length ?? 0; i++) {
+			let a = li[i].getElementsByTagName('button')[0];
+			txtValue = a.textContent || a.innerText;
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				li[i].style.display = '';
+			} else {
+				li[i].style.display = 'none';
+			}
+		}
+	}
+	let categories = [Essentials, Vegetables, Fruits, Meats];
 </script>
 
-<div class="mt-12 ml-6 mr-6">
+<div class="mt-12 ml-6 mr-6 mb-12">
 	<h1 class="title text-6xl font-bold">Pantry</h1>
 	<h2 class="subtitle mt-4 text-lg font-bold">You have selected {items.length} items</h2>
 
 	<input
-		class="input mt-6 w-full rounded-xl p-4"
+		bind:value={inputValue}
 		type="text"
 		id="myInput"
-		onkeyup="myFunction()"
+		on:keyup={myFunction}
 		placeholder="Search for items..."
-		title="Type in a name"
+		title="search"
+		class="h-12 w-full rounded-2xl pl-6"
 	/>
-	<div class="flex flex-col items-start" />
+	{#if inputValue?.trim()?.length > 0}
+		<ul class="absolute z-10 w-fit rounded-xl bg-orange-300" bind:this={ulValue} id="ULLL">
+			{#each [...new Set([...allItems])] as item}
+				<li
+					id={`${item}`}
+					class={`roboto w-auto bg-[#ffd384] p-2 text-center text-[#cc5519] hover:scale-125 ${item.trim()}`}
+				>
+					<button on:click={() => update(item)}>{item}</button>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+	<div class="mt-4 mb-24 flex min-w-full flex-col items-start gap-y-4">
+		{#each categories as category}
+			<Category data={category} />
+		{/each}
+	</div>
 </div>
 
 <style>
@@ -35,6 +82,10 @@
 	.subtitle {
 		color: #ff772b;
 		opacity: 78%;
+	}
+
+	:global(.active) {
+		background-color: #ef945f;
 	}
 
 	.input {
