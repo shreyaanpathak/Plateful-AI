@@ -17,20 +17,16 @@
 
 {#if animate}
 	<div class="pagecontainer">
-		<div class="topnav font-bold text-4xl pt-2 pl-2 pb-2 basis-full">Plateful</div>
-		<div class="flex flex-row h-screen justify-center items-center">
+		<div class="flex h-screen flex-row items-center justify-center">
 			<div class={rowClasses}>
-				<img alt="Food" class="my-6 m-auto h-full" src={Img1} />
+				<img alt="Food" class="m-auto my-6 h-full" src={Img1} />
 			</div>
 			<div class="{rowClasses} {headerClasses} mb-48 flex flex-col items-center justify-center">
-				<Typewriter interval={40}>
-					<h1 in:slide class="text-5xl font-extrabold tracking-tight leading-snug">
-						The Best Homecooked Meals in Your Own Pantry
-					</h1>
-				</Typewriter>
+				<h1 class="text-5xl font-extrabold leading-snug tracking-tight">
+					The Best Homecooked Meals in Your Own Pantry
+				</h1>
 				<p
-					in:slide={{ delay: 300 }}
-					class="text-2xl font-normal mt-14 p-14 rounded-xl w-9/12 leading-10 paragraph"
+					class="paragraph mt-14 w-9/12 rounded-xl border-transparent p-8 text-2xl font-normal leading-10"
 				>
 					Plateful is the ultimate kitchen assistant that helps you make the most out of the food
 					you
@@ -40,11 +36,11 @@
 			</div>
 		</div>
 
-		<div class="flex flex-row accent h-screen items-center justify-center">
+		<div class="accent flex h-screen flex-row items-center justify-center">
 			<div class="{rowClasses} {headerClasses} flex flex-col items-center">
 				<h1 class="text-6xl font-extrabold tracking-tight">What is Plateful?</h1>
 				<p
-					class="text-xl font-normal mt-14 mb-6 p-6 w-8/12 rounded-xl text-left leading-relaxed paragraph"
+					class="paragraph mt-14 mb-6 w-8/12 rounded-xl border-transparent p-6 text-left text-xl font-normal leading-relaxed"
 				>
 					Plateful makes meal planning and recipe creation effortless. Simply select the food items
 					you have in your kitchen and the website will search through a database of thousands of
@@ -53,24 +49,39 @@
 				</p>
 			</div>
 			<div class={rowClasses}>
-				<img alt="chefs" class="my-6 m-auto h-full" src={Img2} />
+				<img alt="chefs" class="m-auto my-6 h-full" src={Img2} />
 			</div>
 		</div>
 
-		<div class="flex flex-row h-screen items-center justify-center">
+		<div class="flex h-screen flex-row items-center justify-center">
 			<div class={rowClasses}>
-				<img alt="food" class="my-6 m-auto h-full" src={Img1} />
+				<img alt="food" class="m-auto my-6 h-full" src={Img1} />
 			</div>
 			<div class="{rowClasses} {headerClasses} flex flex-col items-center">
 				<h1 class="text-5xl font-extrabold tracking-tight">How Does Plateful Work?</h1>
 				<p
-					class="text-xl font-bold mt-14 p-4 rounded-xl pr-8 leading-relaxed paragraph text-right w-8/12"
+					class="paragraph mt-14 w-8/12 rounded-xl border-transparent p-4 pr-8 text-right text-xl font-bold leading-relaxed"
 				>
 					Plateful analyzes a user's ingredients and suggest recipes that not only use up what they
 					already have, but also make the most of their unique flavor profiles. Whether it's a busy
 					weeknight or a special occasion, Plateful is the perfect tool for anyone looking to
 					simplify meal planning and elevate their cooking game
 				</p>
+			</div>
+		</div>
+
+		<div class="flex h-screen flex-row items-center justify-center">
+			<div class={rowClasses}>
+				<img alt="Food" class="m-auto my-6 h-full" src={Img1} />
+			</div>
+			<div class="{rowClasses} {headerClasses} mb-48 flex flex-col items-center justify-center">
+				<h1 class="text-5xl font-extrabold leading-snug tracking-tight">Experience!</h1>
+				<a
+					href="/pantry"
+					class="paragraph mt-14 w-9/12 rounded-xl border-transparent p-8 text-2xl font-normal leading-10"
+				>
+					Open the Pantry
+				</a>
 			</div>
 		</div>
 	</div>
