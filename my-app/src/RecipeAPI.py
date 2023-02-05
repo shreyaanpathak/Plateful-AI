@@ -1,6 +1,5 @@
-"""
-A simple wrapper for the official ChatGPT API
-"""
+from flask import Flask
+from flask_restful import Api, Resource
 import argparse
 import json
 import os
@@ -11,13 +10,15 @@ import openai
 import tiktoken
 
 
+app = Flask(__name__)
+api = Api(app)
+
+
+
 
 ENGINE = os.environ.get("GPT_ENGINE") or "text-chat-davinci-002-20221122"
 
 ENCODER = tiktoken.get_encoding("gpt2")
-
-
-
 
 
 def get_max_tokens(prompt: str) -> int:
@@ -380,19 +381,20 @@ def main():
 
         # Initialize an empty list to store the input lines
         #lines = []
-
+        
         # Read lines of input until the user enters an empty line
         #while True:
         #    line = input()
         #    if line == "":
         #        break
         #    lines.append(line)
-        ingredients = ["bacon","eggs","cheddar cheese","onions","bell peppers","cilantro","green chilli","bread"]
+        ingredients = ["chorizo","egg","spinach","toast"]
+
        
-        base_prompt_1 = "Ingredients in my fridge: "
+        base_prompt_1 = "Ingredients I have: "
         for ingredient in ingredients:
             base_prompt_1+= ("-" + ingredient)
-        prompt = base_prompt_1+" Give me an idea for a balanced simple meal with vegetables, carbs and protein i can make with the least amount of ingredients possible. When outputting your response write the name of the meal in the first line, then add two new lines, add the ingredients being used in a new line, then add two more new lines and write the steps in a new line each time"
+        prompt = base_prompt_1+" Give me an idea for a balanced simple meal with vegetables, carbs and protein I can make with the least amount of ingredients possible. When outputting your response write the name of the meal in the first line, then add two new lines. Then add the ingredients being used in a new line. Then add two more new lines and write the steps in a new line"
         
         
         # Return the input
@@ -464,24 +466,45 @@ def main():
         prompt = get_input()
     except KeyboardInterrupt:
        
-        print(prompt)
-        print(full_response)
-        print("\nExiting...")
+        #print(prompt)
+        #print(full_response)
+        #print("\nExiting...")
         sys.exit()
 
     if not args.stream:
         response = chatbot.ask(prompt, temperature=args.temperature)
-        print(response["choices"][0]["text"])
+        #print(response["choices"][0]["text"])
     else:
-        print()
+        #print()
         sys.stdout.flush()
         prev_response = chatbot.ask_stream(prompt, temperature=args.temperature)
         for response in prev_response:
-            print(response, end="")
+            #print(response, end="")
             full_response+= response
             sys.stdout.flush()
-        print()
+        reccomendation = full_response
+        #print()
+    return reccomendation
+    
 
+class Recipe(Resource):
+    def get(self, rawingredients ):
+        #recipe = reccomendation
+        ingredients = []
+        ingredients = rawingredients.split("-")
+
+        
+        
+
+        return ingredients
+
+    def post(self, rawingredients):
+
+        return {"response": main()}  
+
+
+api.add_resource(Recipe, "/recipe/<string:rawingredients>")
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)
+    
