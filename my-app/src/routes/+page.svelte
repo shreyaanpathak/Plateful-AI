@@ -6,7 +6,7 @@
 	import '@fontsource/frank-ruhl-libre';
 	import { onMount } from 'svelte';
 	import { fade, fly, slide } from 'svelte/transition';
-	import Typewriter, { concurrent } from 'svelte-typewriter';
+	import Typewriter from 'svelte-typewriter';
 
 	let animate = false;
 
@@ -23,13 +23,11 @@
 				<img in:fly={{ duration: 1200 }} alt="Food" class="my-6 m-auto h-full" src={Img1} />
 			</div>
 			<div class="{rowClasses} {headerClasses} mb-48 flex flex-col items-center justify-center">
-				<h1
-					use:concurrent={{ interval: 40 }}
-					in:slide
-					class="text-5xl font-extrabold tracking-tight leading-snug"
-				>
-					The Best Homecooked Meals in Your Own Pantry
-				</h1>
+				<Typewriter interval={40}>
+					<h1 in:slide class="text-5xl font-extrabold tracking-tight leading-snug">
+						The Best Homecooked Meals in Your Own Pantry
+					</h1>
+				</Typewriter>
 				<p
 					in:slide={{ delay: 300 }}
 					class="text-xl font-normal mt-14 p-6 rounded-xl w-9/12 leading-relaxed paragraph"
