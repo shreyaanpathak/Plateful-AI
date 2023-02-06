@@ -1,17 +1,19 @@
 from flask import Flask
 from flask_restful import Api, Resource
+from flask_cors import CORS
 import argparse
 import json
 import os
 import sys
 from datetime import date
-
+import requests
 import openai
 import tiktoken
-
+import regex as re
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 
 
@@ -329,6 +331,8 @@ class Conversation:
     For handling multiple conversations
     """
 
+    
+
     def __init__(self) -> None:
         self.conversations = {}
 
@@ -369,9 +373,10 @@ class Conversation:
         """
         with open(file, encoding="utf-8") as f:
             self.conversations = json.loads(f.read())
+ingredients = []
 
+def main(ingredients, culture):
 
-def main():
 
     def get_input():
         """
@@ -388,18 +393,28 @@ def main():
         #    if line == "":
         #        break
         #    lines.append(line)
-        ingredients = ["chorizo","egg","spinach","toast"]
 
-       
         base_prompt_1 = "Ingredients I have: "
         for ingredient in ingredients:
             base_prompt_1+= ("-" + ingredient)
-        prompt = base_prompt_1+" Give me an idea for a balanced simple meal with vegetables, carbs and protein I can make with the least amount of ingredients possible. When outputting your response write the name of the meal in the first line, then add two new lines. Then add the ingredients being used in a new line. Then add two more new lines and write the steps in a new line"
+
+        #if plan == "feast"
+        #    prompt = base_prompt_1+" Give me an idea for a balanced meal with a main dish and 2 side dishes I can make with the ingredients. When outputting your response write the name of the meal in the first line, then add two new lines. Then add the ingredients being used in a new line. Then add two more new lines and write the steps in a new line"
+        #elif plan == "elaborate":
+        #    prompt = base_prompt_1+" Give me an idea for a balanced simple meal with vegetables, carbs and protein I can make with the ingredients given. When outputting your response write the name of the meal in the first line, then add two new lines. Then add the ingredients being used in a new line. Then add two more new lines and write the steps in a new line"
+        #elif plan == "frugal":
+            
+        #else:
+        #    print("error")
+
+        
+        
+
+        
         
         
         # Return the input
-        return prompt
-
+        return base_prompt_1+" Give me an idea for a balanced "+culture+ "-style meal I can make. When outputting your response write the name of the meal in the first line, then add two new lines. Then list the ingredients in a new line in the format \nIngredients:\nFettucine\nSpinach 2\netc.\n (Don't include measurements for ingredients). \nThen add two more new lines and write the steps in a new line"
     def chatbot_commands(cmd: str) -> bool:
         """
         Handle chatbot commands
@@ -441,12 +456,6 @@ def main():
     # Get API key from command line
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--api_key",
-        type=str,
-        required=True,
-        help="OpenAI API key",
-    )
-    parser.add_argument(
         "--stream",
         action="store_true",
         help="Stream response",
@@ -458,11 +467,13 @@ def main():
         help="Temperature for response",
     )
     args = parser.parse_args()
+    args.stream = True
     # Initialize chatbot
-    chatbot = Chatbot(api_key=args.api_key)
+    chatbot = Chatbot(api_key='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')
     # Start chat
     full_response = ""
     try:
+
         prompt = get_input()
     except KeyboardInterrupt:
        
@@ -487,23 +498,56 @@ def main():
     return reccomendation
     
 
+def parser(response):
+    response = response.split("\n\n")
+    name = response[0][1:]
+    ingredients = response[1].split("\n")[1:]
+
+    for x in range(0,len(ingredients)):
+        ing = re.findall("[a-zA-Z]+",ingredients[x])
+        if len(ing) > 1:
+            ing = [ing[0]+" "+ing[1]]
+        ingredients[x]=ing
+
+    steps = response[2].split("\n")[1:]
+    for i in range(0,len(steps)):
+        steps[i]=steps[i][3:]
+
+    final_ingredients = []
+    for i in ingredients:
+        final_ingredients.append(i[0])
+
+    FullRecipe = {
+        "name":name,
+        "ingredients":final_ingredients,
+        "steps":steps,
+        "image": 'https://images-ext-2.discordapp.net/external/04UK3rRah0_H1zvlNoRhD2xw3aLKwklE2-_hZFrtc7M/https/i.pinimg.com/564x/77/0c/82/770c82b58dc36466e4dd59a1a82705b2.jpg'
+    }
+    jsonRecipe = json.dumps(FullRecipe)
+    return jsonRecipe
+#returned_response = main()
+#parsed_response = parser()
+
+global returnjson
+
 class Recipe(Resource):
-    def get(self, rawingredients ):
+    
+    def get(self, rawingredients, culture ):
         #recipe = reccomendation
-        ingredients = []
-        ingredients = rawingredients.split("-")
-
         
+        ingredient = rawingredients.split("-")
         
+        ingredient.append(culture)
+        return ingredient
 
-        return ingredients
+    def post(self, rawingredients, culture):
 
-    def post(self, rawingredients):
+        returnjson = parser(main(rawingredients, culture))
+        print('returnjson ', returnjson, flush=True)
+        return returnjson 
 
-        return {"response": main()}  
 
-
-api.add_resource(Recipe, "/recipe/<string:rawingredients>")
+api.add_resource(Recipe, "/recipe/<string:culture>/<string:rawingredients>")
 
 if __name__ == "__main__":
     app.run(debug=True)

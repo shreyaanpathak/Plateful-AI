@@ -1,6 +1,13 @@
 import { readable, writable } from "svelte/store";
 
+
+
+export const GRECIPE = writable({});
+
+export const visible = writable(false);
 export const selected_items = writable(new Array());
+
+export const culture = writable("");
 
 export const pantry_items = readable(`
 Butter

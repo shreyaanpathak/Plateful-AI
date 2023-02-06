@@ -3,6 +3,9 @@
 	let headerClasses = 'mt-24 font-bold text-4xl';
 	import Img1 from '$lib/assets/img1.png';
 	import Img2 from '$lib/assets/img2.png';
+	import Img3 from '$lib/assets/ihatecpp.png';
+	import Img4 from '$lib/assets/FUCKJAVA.png';
+	import Img5 from '$lib/assets/ihatejava.png';
 	import '@fontsource/frank-ruhl-libre';
 	import { onMount } from 'svelte';
 	import { fade, fly, slide } from 'svelte/transition';
@@ -22,7 +25,7 @@
 				<img alt="Food" class="m-auto my-6 h-full" src={Img1} />
 			</div>
 			<div class="{rowClasses} {headerClasses} mb-48 flex flex-col items-center justify-center">
-				<h1 class="text-5xl font-extrabold leading-snug tracking-tight">
+				<h1 class="mr-12 text-5xl font-extrabold leading-snug tracking-tight">
 					The Best Homecooked Meals in Your Own Pantry
 				</h1>
 				<p
@@ -49,13 +52,13 @@
 				</p>
 			</div>
 			<div class={rowClasses}>
-				<img alt="chefs" class="m-auto my-6 h-full" src={Img2} />
+				<img alt="chefs" class="m-auto h-full" src={Img3} />
 			</div>
 		</div>
 
 		<div class="flex h-screen flex-row items-center justify-center">
 			<div class={rowClasses}>
-				<img alt="food" class="m-auto my-6 h-full" src={Img1} />
+				<img alt="food" class="m-auto h-auto" src={Img4} />
 			</div>
 			<div class="{rowClasses} {headerClasses} flex flex-col items-center">
 				<h1 class="text-5xl font-extrabold tracking-tight">How Does Plateful Work?</h1>
@@ -70,17 +73,19 @@
 			</div>
 		</div>
 
-		<div class="flex h-screen flex-row items-center justify-center">
+		<div class="flex h-screen flex-row items-center justify-center bg-[#FF884B] bg-opacity-[17%]">
 			<div class={rowClasses}>
-				<img alt="Food" class="m-auto my-6 h-full" src={Img1} />
+				<img class="m-auto h-auto" src={Img5} alt="bas" />
 			</div>
 			<div class="{rowClasses} {headerClasses} mb-48 flex flex-col items-center justify-center">
-				<h1 class="text-5xl font-extrabold leading-snug tracking-tight">Experience!</h1>
+				<h1 class="text-5xl font-extrabold leading-snug tracking-tight">
+					Ready For The Most Flavorful Recipes Right In Your Home?
+				</h1>
 				<a
 					href="/pantry"
-					class="paragraph mt-14 w-9/12 rounded-xl border-transparent p-8 text-2xl font-normal leading-10"
+					class="paragraph mt-14 w-9/12 rounded-xl border-transparent p-8 text-6xl font-normal leading-10 drop-shadow-[0_35px_35px_rgba(0,0,,0.25)]"
 				>
-					Open the Pantry
+					Get Started Now
 				</a>
 			</div>
 		</div>
