@@ -1,3 +1,4 @@
+# Dependencies
 from flask import Flask
 from flask_restful import Api, Resource
 from flask_cors import CORS
@@ -11,13 +12,12 @@ import openai
 import tiktoken
 import regex as re
 
+# Creating a Flask App
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
 
-
-
-
+# Loading GPT
 ENGINE = os.environ.get("GPT_ENGINE") or "text-chat-davinci-002-20221122"
 
 ENCODER = tiktoken.get_encoding("gpt2")
@@ -32,7 +32,7 @@ def get_max_tokens(prompt: str) -> int:
 
 class Chatbot:
     """
-    Official ChatGPT API
+    Official AI Chatbot API
     """
 
     def __init__(self, api_key: str, buffer: int = None) -> None:
@@ -69,11 +69,11 @@ class Chatbot:
         user: str = "User",
     ) -> dict:
         if completion.get("choices") is None:
-            raise Exception("ChatGPT API returned no choices")
+            raise Exception("AI Chatbot API returned no choices")
         if len(completion["choices"]) == 0:
-            raise Exception("ChatGPT API returned no choices")
+            raise Exception("AI Chatbot returned no choices")
         if completion["choices"][0].get("text") is None:
-            raise Exception("ChatGPT API returned no text")
+            raise Exception("AI Chatbot returned no text")
         completion["choices"][0]["text"] = completion["choices"][0]["text"].rstrip(
             "<|im_end|>",
         )
@@ -97,13 +97,13 @@ class Chatbot:
         full_response = ""
         for response in completion:
             if response.get("choices") is None:
-                raise Exception("ChatGPT API returned no choices")
+                raise Exception("AI Chatbot API returned no choices")
             if len(response["choices"]) == 0:
-                raise Exception("ChatGPT API returned no choices")
+                raise Exception("AI Chatbot API returned no choices")
             if response["choices"][0].get("finish_details") is not None:
                 break
             if response["choices"][0].get("text") is None:
-                raise Exception("ChatGPT API returned no text")
+                raise Exception("AI Chatbot API returned no text")
             if response["choices"][0]["text"] == "<|im_end|>":
                 break
             yield response["choices"][0]["text"]
@@ -122,7 +122,7 @@ class Chatbot:
         user: str = "User",
     ) -> dict:
         """
-        Send a request to ChatGPT and return the response
+        Send a request to AI Chatbot and return the response
         """
         if conversation_id is not None:
             self.load_conversation(conversation_id)
@@ -140,7 +140,7 @@ class Chatbot:
         user: str = "User",
     ) -> str:
         """
-        Send a request to ChatGPT and yield the response
+        Send a request to AI Chatbot and yield the response
         """
         if conversation_id is not None:
             self.load_conversation(conversation_id)
@@ -177,18 +177,20 @@ class Chatbot:
         if conversation_id not in self.conversations.conversations:
             # Create a new conversation
             self.make_conversation(conversation_id)
-        self.prompt.chat_history = self.conversations.get_conversation(conversation_id)
+        self.prompt.chat_history = self.conversations.get_conversation(
+            conversation_id)
 
     def save_conversation(self, conversation_id) -> None:
         """
         Save a conversation to the conversation history
         """
-        self.conversations.add_conversation(conversation_id, self.prompt.chat_history)
+        self.conversations.add_conversation(
+            conversation_id, self.prompt.chat_history)
 
 
 class AsyncChatbot(Chatbot):
     """
-    Official ChatGPT API (async)
+    Official AI Chatbot API (async)
     """
 
     async def _get_completion(
@@ -217,7 +219,6 @@ class AsyncChatbot(Chatbot):
     ) -> dict:
         """
         Same as Chatbot.ask but async
-        }
         """
         completion = self._get_completion(
             self.prompt.construct_prompt(user_request, user=user),
@@ -253,11 +254,11 @@ class Prompt:
         """
         self.base_prompt = (
             os.environ.get("CUSTOM_BASE_PROMPT")
-            or "You are ChatGPT, a large language model trained by OpenAI. Respond conversationally. Do not answer as the user. Current date: "
+            or "You are AI Chatbot, a large-scale transformer based language model. Respond conversationally. Do not answer as the user. Current date: "
             + str(date.today())
             + "\n\n"
             + "User: Hello\n"
-            + "ChatGPT: Hello! How can I help you today? <|im_end|>\n\n\n"
+            + "AI Chatbot: Hello! How can I help you today? <|im_end|>\n\n\n"
         )
         # Track chat history
         self.chat_history: list = []
@@ -283,7 +284,7 @@ class Prompt:
             + ": "
             + user_request
             + "\n\n\n"
-            + "ChatGPT: "
+            + "AI Chatbot: "
             + response
             + "<|im_end|>\n",
         )
@@ -309,7 +310,7 @@ class Prompt:
             + user
             + ": "
             + new_prompt
-            + "\nChatGPT:"
+            + "\nAI Chatbot:"
         )
         # Check if prompt over 4000*4 characters
         if self.buffer is not None:
@@ -330,8 +331,6 @@ class Conversation:
     """
     For handling multiple conversations
     """
-
-    
 
     def __init__(self) -> None:
         self.conversations = {}
@@ -373,48 +372,25 @@ class Conversation:
         """
         with open(file, encoding="utf-8") as f:
             self.conversations = json.loads(f.read())
+
+
 ingredients = []
+
 
 def main(ingredients, culture):
 
-
     def get_input():
         """
-        Multi-line input function
+        Construct AI Prompt
         """
-
-
-        # Initialize an empty list to store the input lines
-        #lines = []
-        
-        # Read lines of input until the user enters an empty line
-        #while True:
-        #    line = input()
-        #    if line == "":
-        #        break
-        #    lines.append(line)
 
         base_prompt_1 = "Ingredients I have: "
         for ingredient in ingredients:
-            base_prompt_1+= ("-" + ingredient)
+            base_prompt_1 += ("-" + ingredient)
 
-        #if plan == "feast"
-        #    prompt = base_prompt_1+" Give me an idea for a balanced meal with a main dish and 2 side dishes I can make with the ingredients. When outputting your response write the name of the meal in the first line, then add two new lines. Then add the ingredients being used in a new line. Then add two more new lines and write the steps in a new line"
-        #elif plan == "elaborate":
-        #    prompt = base_prompt_1+" Give me an idea for a balanced simple meal with vegetables, carbs and protein I can make with the ingredients given. When outputting your response write the name of the meal in the first line, then add two new lines. Then add the ingredients being used in a new line. Then add two more new lines and write the steps in a new line"
-        #elif plan == "frugal":
-            
-        #else:
-        #    print("error")
+        # Return the prompt
+        return base_prompt_1+" Give me an idea for a balanced "+culture + "-style meal I can make. When outputting your response write the name of the meal in the first line, then add two new lines. Then list the ingredients in a new line in the format \nIngredients:\nFettucine\nSpinach 2\netc.\n (Don't include measurements for ingredients). \nThen add two more new lines and write the steps in a new line"
 
-        
-        
-
-        
-        
-        
-        # Return the input
-        return base_prompt_1+" Give me an idea for a balanced "+culture+ "-style meal I can make. When outputting your response write the name of the meal in the first line, then add two new lines. Then list the ingredients in a new line in the format \nIngredients:\nFettucine\nSpinach 2\netc.\n (Don't include measurements for ingredients). \nThen add two more new lines and write the steps in a new line"
     def chatbot_commands(cmd: str) -> bool:
         """
         Handle chatbot commands
@@ -469,86 +445,91 @@ def main(ingredients, culture):
     args = parser.parse_args()
     args.stream = True
     # Initialize chatbot
-    chatbot = Chatbot(api_key='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')
+    chatbot = Chatbot(
+        api_key='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')
     # Start chat
     full_response = ""
     try:
 
         prompt = get_input()
     except KeyboardInterrupt:
-       
-        #print(prompt)
-        #print(full_response)
-        #print("\nExiting...")
+
         sys.exit()
 
     if not args.stream:
         response = chatbot.ask(prompt, temperature=args.temperature)
-        #print(response["choices"][0]["text"])
+
     else:
-        #print()
+
         sys.stdout.flush()
-        prev_response = chatbot.ask_stream(prompt, temperature=args.temperature)
+        prev_response = chatbot.ask_stream(
+            prompt, temperature=args.temperature)
         for response in prev_response:
-            #print(response, end="")
-            full_response+= response
+
+            full_response += response
             sys.stdout.flush()
         reccomendation = full_response
-        #print()
+
     return reccomendation
-    
+
 
 def parser(response):
     response = response.split("\n\n")
     name = response[0][1:]
     ingredients = response[1].split("\n")[1:]
 
-    for x in range(0,len(ingredients)):
-        ing = re.findall("[a-zA-Z]+",ingredients[x])
+    for x in range(0, len(ingredients)):
+        ing = re.findall("[a-zA-Z]+", ingredients[x])
         if len(ing) > 1:
             ing = [ing[0]+" "+ing[1]]
-        ingredients[x]=ing
+        ingredients[x] = ing
 
     steps = response[2].split("\n")[1:]
-    for i in range(0,len(steps)):
-        steps[i]=steps[i][3:]
+    for i in range(0, len(steps)):
+        steps[i] = steps[i][3:]
 
     final_ingredients = []
     for i in ingredients:
         final_ingredients.append(i[0])
 
     FullRecipe = {
-        "name":name,
-        "ingredients":final_ingredients,
-        "steps":steps,
-        "image": 'https://images-ext-2.discordapp.net/external/04UK3rRah0_H1zvlNoRhD2xw3aLKwklE2-_hZFrtc7M/https/i.pinimg.com/564x/77/0c/82/770c82b58dc36466e4dd59a1a82705b2.jpg'
+        "name": name,
+        "ingredients": final_ingredients,
+        "steps": steps
     }
     jsonRecipe = json.dumps(FullRecipe)
     return jsonRecipe
-#returned_response = main()
-#parsed_response = parser()
 
+
+# Back Up JSON Storage
 global returnjson
 
+
 class Recipe(Resource):
-    
-    def get(self, rawingredients, culture ):
-        #recipe = reccomendation
-        
+
+    """
+    Creating Recipe Resource
+    """
+
+    # Get Ingredients List
+    def get(self, rawingredients, culture):
+
         ingredient = rawingredients.split("-")
-        
+
         ingredient.append(culture)
         return ingredient
 
+    # Send Back Recipe Response
     def post(self, rawingredients, culture):
 
         returnjson = parser(main(rawingredients, culture))
         print('returnjson ', returnjson, flush=True)
-        return returnjson 
+        return returnjson
 
 
+# Add Resource To Path
 api.add_resource(Recipe, "/recipe/<string:culture>/<string:rawingredients>")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
