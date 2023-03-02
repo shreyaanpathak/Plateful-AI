@@ -47,6 +47,7 @@
 		border-radius: 15pt;
 		background-color: #fff8ea;
 		font-family: 'Frank Ruhl Libre', Verdana, Geneva, Tahoma, sans-serif;
+		z-index: 40;
 	}
 
 	.image {

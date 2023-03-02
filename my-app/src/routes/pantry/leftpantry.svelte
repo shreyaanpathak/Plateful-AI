@@ -96,7 +96,7 @@
 
 	<div>
 		{#if inputValue?.trim()?.length > 0}
-			<ul class="relative z-10 mt-0 rounded-xl bg-orange-300" bind:this={ulValue} id="ULLL">
+			<ul class="relative mt-0 rounded-xl bg-orange-300" bind:this={ulValue} id="ULLL">
 				{#each [...new Set([...allItems])] as item}
 					<li
 						id={`${item}`}

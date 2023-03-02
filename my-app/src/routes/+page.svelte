@@ -4,7 +4,7 @@
 	import Img1 from '$lib/assets/img1.png';
 	import Img2 from '$lib/assets/img2.png';
 	import Img3 from '$lib/assets/ihatecpp.png';
-	import Img4 from '$lib/assets/FUCKJAVA.png';
+	import Img4 from '$lib/assets/whoops.png';
 	import Img5 from '$lib/assets/ihatejava.png';
 	import '@fontsource/frank-ruhl-libre';
 	import { onMount } from 'svelte';

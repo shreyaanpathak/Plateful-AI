@@ -34,10 +34,11 @@
 			image: imageurl
 		}
 	];
+	let loading = false;
 	selected_items.subscribe((value) => (items = value));
 
 	async function handleSubmit() {
-		const response = await fetch(
+		/*const response = await fetch(
 			`http://localhost:5000/recipe/${currentCulture}/${items.join('-')}`,
 			{
 				method: 'POST',
@@ -46,18 +47,40 @@
 				},
 				mode: 'cors'
 			}
-		);
-		const data = await response.json();
+		);*/
+		console.log( JSON.stringify({ingredients: items,culture: currentCulture}));
+		loading = true;
+		const response = await fetch("/api/recipe", 
+		{
+			method: "POST",
+			body: JSON.stringify({
+				ingredients: items,
+				culture: currentCulture
+			}),
+		});
+		loading = false;
+		const data = await response.text();
+		const json = JSON.parse(data);
 		console.log(`data: ${data}`);
-		recipes = [JSON.parse(data)];
-		GRECIPE.set(JSON.parse(data));
-		console.log(recipes, data);
+		recipes = [json];
+		GRECIPE.set(json);
 	}
 </script>
 
 <div class="mt-16 ml-6 text-4xl font-bold text-[#FF772B]">
 	<div class="height flex flex-row">
-		<h1 class="">You have selected {items.length} items</h1>
+		<div class="flex flex-col">
+		<h1 class="font-serif">You have selected {items.length} items</h1>
+		{#if loading}
+		<span class="p-4 flex items-center flex-row rounded-xl bg-blue-300">
+			<svg class="animate-spin right-0 left-0 mr-3 h-20 w-14 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+		  	</svg>
+			Loading...
+		</span>
+		  {/if}
+		</div>
 		<button
 			on:click={handleSubmit}
 			class="mb-5 ml-6 rounded-xl border-2 border-transparent bg-[#FFE5B7] p-2 font-bold text-[#AC3E00]"
