@@ -33,6 +33,7 @@
 		"@fontsource/frank-ruhl-libre": "^4.5.11",
 		"@fontsource/inter": "^4.5.15",
 		"@fontsource/roboto": "^4.5.8",
+		"@sveltejs/adapter-vercel": "^2.2.1",
 		"@tailwindcss/postcss7-compat": "^2.2.17",
 		"animejs": "^3.2.1",
 		"openai": "^3.2.1",
